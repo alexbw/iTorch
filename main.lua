@@ -102,7 +102,7 @@ shell_router.kernel_info_request = function (sock, msg)
    local reply = util.msg('kernel_info_reply', msg)
    reply.content = {
       protocol_version = {4,0},
-      language_version = {jit.version_num},
+      language_version = {_VERSION},
       language = 'lua'
    }
    util.ipyEncodeAndSend(sock, reply);
