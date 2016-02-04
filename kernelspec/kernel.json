@@ -2,8 +2,7 @@
  "argv": [
   "itorch_launcher",
   "{connection_file}"
-  "--use_kernel_is_complete=False",
  ],
  "display_name": "iTorch",
- "language": "lua",
+ "language": "lua"
 }
