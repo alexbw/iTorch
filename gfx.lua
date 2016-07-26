@@ -11,8 +11,12 @@ local util = require 'itorch.util'
 function itorch.image(img, opts)
    assert(itorch._iopub,'itorch._iopub socket not set')
    assert(itorch._msg,'itorch._msg not set')
-   if torch.typename(img) == 'string' then -- assume that it is path
-      img = image.load(img, 3) -- TODO: revamp this to just directly load the blob, infer file prefix, and send.
+   if torch.type(img) == 'string' then -- assume that it is path
+      if img:sub(#img-3) == '.svg' then
+	 return itorch.svg(img)
+      else
+	 img = image.load(img, 3) -- TODO: revamp this to just directly load the blob, infer file prefix, and send.
+      end
    end
    if torch.isTensor(img) or torch.type(img) == 'table' then
       opts = opts or {padding=2}
@@ -147,12 +151,12 @@ local html_template =
 ]]
 
 local function escape_js(s)
-   -- single quite
-   s = s:gsub("'","\\'")
-   -- double quote
-   s = s:gsub('"','\\"')
    -- backslash
    s = s:gsub("\\","\\\\")
+   -- single quite
+   s = s:gsub("'","\'")
+   -- double quote
+   s = s:gsub('"','\"')
    -- newline
    s = s:gsub("\n","\\n")
    -- carriage return
@@ -188,6 +192,19 @@ function itorch.html(html, window_id)
    m.content = content
    util.ipyEncodeAndSend(itorch._iopub, m)
    return window_id
+end
+
+function itorch.svg(filename)
+   -- first check if file exists.
+   if paths.filep(filename) then
+      local f = io.open(filename)
+      local str = f:read("*all")
+      f:close()
+      return itorch.html(str)
+   else -- try rendering as raw string
+      return itorch.html(filename)
+   end
+   
 end
 
 
