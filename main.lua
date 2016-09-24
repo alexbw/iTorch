@@ -89,6 +89,7 @@ iopub_router.stream = function(sock, m, stream, text)
    }
    util.ipyEncodeAndSend(sock, o);
 end
+itorch._iopub_router = iopub_router -- for the display functions to have access
 
 ---------------------------------------------------------------------------
 -- Shell router
@@ -287,6 +288,13 @@ end
 
 shell_router.comm_open = function (sock,msg)
    print('WARNING: comm_open not handled yet');
+end
+
+shell_router.comm_info_request = function (sock,msg)
+   local reply = util.msg('comm_info_reply', msg)
+   reply.content = {}
+   reply.content.comms = {}
+   util.ipyEncodeAndSend(sock, reply);
 end
 
 local word_break_characters = '[" \t\n\"\\\'><=;:%+%-%*/%%^~#{}%(%)%[%],"]'

@@ -46,7 +46,7 @@ A Plot object is introduced, that can plot different kinds of plots such as scat
 ```lua
 Plot = require 'itorch.Plot'
 ```
-The plotting can be extended to more kinds of plots, as it uses [Bokeh.js](http://bokeh.pydata.org/en/latest/docs/reference/bokehjs.html) as its backend.
+The plotting can be extended to more kinds of plots, as it uses [Bokeh.js](http://bokeh.pydata.org/en/latest/docs/dev_guide/bokehjs.html) as its backend.
 ```lua
 x1 = torch.randn(40):mul(100)
 y1 = torch.randn(40):mul(100)
@@ -158,6 +158,9 @@ luarocks install luacrypto OPENSSL_DIR=/usr/local/opt/openssl/
 
 # Ubuntu
 sudo apt-get install libzmq3-dev libssl-dev python-zmq
+
+# Ubuntu 16
+luarocks install lzmq
 ```
 
 ## Installing iTorch
@@ -171,6 +174,13 @@ If you have to use sudo for some reason (if you globally installed torch on Linu
 ```bash
 sudo env "PATH=$PATH" luarocks make
 sudo chown -R $USER $(dirname $(ipython locate profile))
+```
+
+## Docker Images
+Ubuntu 14.04 + iTorch notebook + Miniconda: see docker hub [repo](https://hub.docker.com/r/dhunter/itorch-notebook/).
+
+```bash
+docker pull dhunter/itorch-notebook
 ```
 
 ## How iTorch works
